@@ -1,0 +1,24 @@
+{
+    "name": "lumineoss/paystart-bridge-standalone",
+    "description": "Framework-free bridge: PDO repositories, SQL migrations, minimal bootstrap.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "ext-pdo": "*",
+        "lumineoss/paystart-core": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Bridge\\Standalone\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Bridge\\Standalone\\Tests\\": "tests/"
+        }
+    }
+}

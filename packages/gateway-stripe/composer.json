@@ -1,0 +1,25 @@
+{
+    "name": "lumineoss/paystart-gateway-stripe",
+    "description": "Stripe adapter wrapping stripe/stripe-php, with webhook verification delegated to the SDK.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "lumineoss/paystart-core": "^1.0",
+        "psr/http-message": "^2.0",
+        "stripe/stripe-php": "^22.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Gateway\\Stripe\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Gateway\\Stripe\\Tests\\": "tests/"
+        }
+    }
+}

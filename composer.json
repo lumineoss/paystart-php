@@ -1,0 +1,78 @@
+{
+    "name": "lumineoss/paystart",
+    "description": "An Accountable library for Financing and Payment Support for PHP",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "deptrac/deptrac": "^4.7",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "infection/infection": "^0.32 || ^0.35",
+        "phpat/phpat": "^0.12",
+        "phpstan/phpstan": "^2.3",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpunit/phpunit": "^11.5",
+        "lumineoss/paystart-core": "@dev",
+        "lumineoss/paystart-gateway-midtrans": "@dev",
+        "lumineoss/paystart-gateway-stripe": "@dev",
+        "lumineoss/paystart-gateway-xendit": "@dev",
+        "lumineoss/paystart-qr-renderer": "@dev",
+        "lumineoss/paystart-bridge-standalone": "@dev",
+        "lumineoss/paystart-testing": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Tests\\": "tests/",
+            "Lumineoss\\Paystart\\Core\\Tests\\": "packages/core/tests/",
+            "Lumineoss\\Paystart\\Gateway\\Midtrans\\Tests\\": "packages/gateway-midtrans/tests/",
+            "Lumineoss\\Paystart\\Bridge\\Standalone\\Tests\\": "packages/bridge-standalone/tests/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "scripts": {
+        "test": "phpunit --testsuite=unit",
+        "test:integration": "phpunit --testsuite=integration",
+        "analyse": "phpstan analyse --memory-limit=1G --no-progress",
+        "arch": "deptrac analyse --config-file=deptrac.yaml --no-progress",
+        "cs": "php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "php-cs-fixer fix",
+        "infection": "infection --min-msi=70 --min-covered-msi=75 --threads=4",
+        "qa": [
+            "@cs",
+            "@analyse",
+            "@arch",
+            "@test"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "infection/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Lumine OSS Team",
+            "email": "oss@lumine.cloud"
+        }
+    ]
+}

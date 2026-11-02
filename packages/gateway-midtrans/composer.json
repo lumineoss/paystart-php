@@ -1,0 +1,29 @@
+{
+    "name": "lumineoss/paystart-gateway-midtrans",
+    "description": "Midtrans adapter: PSR-18 HTTP client, anti-corruption layer, webhook verification.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "lumineoss/paystart-core": "^1.0",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "suggest": {
+        "midtrans/midtrans-php": "^2.6 — reference for request/response shapes only; not loaded at runtime (ADR 0005)"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Gateway\\Midtrans\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Gateway\\Midtrans\\Tests\\": "tests/"
+        }
+    }
+}

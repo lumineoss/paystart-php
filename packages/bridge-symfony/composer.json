@@ -1,0 +1,31 @@
+{
+    "name": "lumineoss/paystart-bridge-symfony",
+    "description": "Symfony bridge: bundle, DI extension and configuration, Doctrine mapping, console commands.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "doctrine/orm": "^3.7",
+        "lumineoss/paystart-core": "^1.0",
+        "symfony/config": "^6.4 || ^7.4",
+        "symfony/console": "^6.4 || ^7.4",
+        "symfony/dependency-injection": "^6.4 || ^7.4",
+        "symfony/http-kernel": "^6.4 || ^7.4"
+    },
+    "require-dev": {
+        "doctrine/doctrine-bundle": "^2.19",
+        "phpunit/phpunit": "^11.5",
+        "symfony/framework-bundle": "^6.4 || ^7.4",
+        "symfony/yaml": "^6.4 || ^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Bridge\\Symfony\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Bridge\\Symfony\\Tests\\": "tests/"
+        }
+    }
+}

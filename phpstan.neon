@@ -1,0 +1,25 @@
+parameters:
+    # Pins analysis to the library floor. This is what makes an accidental use of
+    # a PHP 8.3+ / 8.4+ function (json_validate(), array_find(), ...) a build
+    # failure instead of a runtime surprise on a host. Set by hand: PHPStan would
+    # otherwise infer the interpreter version.
+    phpVersion: 80200
+
+    level: max
+    paths:
+        - src
+        - packages/core/src
+        - packages/gateway-midtrans/src
+        - packages/gateway-xendit/src
+        - packages/gateway-stripe/src
+        - packages/qr-renderer/src
+        - packages/bridge-laravel/src
+        - packages/bridge-symfony/src
+        - packages/bridge-standalone/src
+        - packages/testing/src
+
+    excludePaths:
+        - packages/*/vendor
+
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: true
