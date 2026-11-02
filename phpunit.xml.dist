@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true" cacheDirectory=".phpunit.cache" failOnWarning="true" failOnRisky="true" failOnDeprecation="true" beStrictAboutOutputDuringTests="true">
+  <testsuites>
+    <testsuite name="unit">
+      <directory>tests/Unit</directory>
+      <directory>packages/core/tests/Domain</directory>
+      <directory>packages/core/tests/Application</directory>
+      <directory>packages/gateway-midtrans/tests/Unit</directory>
+      <directory>packages/gateway-xendit/tests/Unit</directory>
+      <directory>packages/gateway-stripe/tests/Unit</directory>
+      <directory>packages/qr-renderer/tests/Unit</directory>
+    </testsuite>
+    <testsuite name="contract">
+      <directory>packages/testing/tests/Contract</directory>
+    </testsuite>
+    <testsuite name="integration">
+      <directory>packages/bridge-laravel/tests</directory>
+      <directory>packages/bridge-symfony/tests</directory>
+      <directory>packages/bridge-standalone/tests</directory>
+    </testsuite>
+  </testsuites>
+  <source>
+    <include>
+      <directory>src</directory>
+      <directory>packages/core/src</directory>
+      <directory>packages/gateway-midtrans/src</directory>
+      <directory>packages/gateway-xendit/src</directory>
+      <directory>packages/gateway-stripe/src</directory>
+      <directory>packages/qr-renderer/src</directory>
+    </include>
+    <exclude>
+      <directory>packages/*/vendor</directory>
+    </exclude>
+  </source>
+  <!-- No coverage block on purpose: requesting a report without a driver
+         emits a warning, and failOnWarning turns that into a failure. CI passes
+         coverage-clover / coverage-html only on lanes that install Xdebug. -->
+</phpunit>

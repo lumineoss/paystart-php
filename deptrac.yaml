@@ -1,0 +1,243 @@
+deptrac:
+  paths:
+    - packages
+
+  exclude_files:
+    - '#.*Test\.php$#'
+    - '#/tests/#'
+
+  layers:
+    # ---------------------------------------------------------------------
+    # Core, split by layer so the dependency rule can be enforced inward.
+    # ---------------------------------------------------------------------
+    - name: CoreDomain
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Core\\Domain\\#'
+
+    - name: CoreApplication
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Core\\Application\\#'
+
+    - name: CorePort
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Core\\Port\\#'
+
+    - name: CoreInfrastructure
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Core\\Infrastructure\\#'
+
+    # ---------------------------------------------------------------------
+    # PSR. Core may depend on these deliberately: they are the port contracts.
+    # ---------------------------------------------------------------------
+    - name: Psr
+      collectors:
+        - type: classNameRegex
+          value: '#^Psr\\#'
+
+    # HTTP types are separated from the rest of PSR so the domain can be
+    # forbidden from touching transport concerns.
+    - name: PsrHttp
+      collectors:
+        - type: classNameRegex
+          value: '#^Psr\\Http\\#'
+
+    # ---------------------------------------------------------------------
+    # Third-party SDKs. Only the matching gateway package may reference these.
+    # ---------------------------------------------------------------------
+    - name: SdkMidtrans
+      collectors:
+        - type: classNameRegex
+          value: '#^(Midtrans|SnapBi)\\#'
+
+    - name: SdkXendit
+      collectors:
+        - type: classNameRegex
+          value: '#^Xendit\\#'
+
+    - name: SdkStripe
+      collectors:
+        - type: classNameRegex
+          value: '#^Stripe\\#'
+
+    - name: SdkQr
+      collectors:
+        - type: classNameRegex
+          value: '#^BaconQrCode\\#'
+
+    - name: SdkGuzzle
+      collectors:
+        - type: classNameRegex
+          value: '#^GuzzleHttp\\#'
+
+    # ---------------------------------------------------------------------
+    # Frameworks. Only the matching bridge may reference these.
+    # ---------------------------------------------------------------------
+    - name: FrameworkLaravel
+      collectors:
+        - type: classNameRegex
+          value: '#^Illuminate\\#'
+
+    - name: FrameworkSymfony
+      collectors:
+        - type: classNameRegex
+          value: '#^Symfony\\#'
+
+    - name: FrameworkDoctrine
+      collectors:
+        - type: classNameRegex
+          value: '#^Doctrine\\#'
+
+    # ---------------------------------------------------------------------
+    # Per-package adapter layers, so a gateway package cannot reach into a
+    # bridge and vice versa.
+    # ---------------------------------------------------------------------
+    - name: GatewayMidtrans
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Gateway\\Midtrans\\#'
+
+    - name: GatewayXendit
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Gateway\\Xendit\\#'
+
+    - name: GatewayStripe
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Gateway\\Stripe\\#'
+
+    - name: QrRenderer
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Qr\\#'
+
+    - name: BridgeLaravel
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Bridge\\Laravel\\#'
+
+    - name: BridgeSymfony
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Bridge\\Symfony\\#'
+
+    - name: BridgeStandalone
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Bridge\\Standalone\\#'
+
+    - name: Testing
+      collectors:
+        - type: classNameRegex
+          value: '#^Lumineoss\\Paystart\\Testing\\#'
+
+  ruleset:
+    # The hard rule: the domain knows only itself and pure PSR contracts.
+    # No HTTP, no ORM, no SDK, no framework, no application layer.
+    # Repository interfaces live inside the domain, so no CorePort edge is needed.
+    CoreDomain:
+      - Psr
+
+    # Ports are the boundary contracts. They reference domain types, so the edge
+    # runs inward: Port -> Domain. PSR-7 appears here because webhook verification
+    # and payment-link ports take an incoming request as a PSR-7 message.
+    CorePort:
+      - CoreDomain
+      - Psr
+      - PsrHttp
+
+    CoreApplication:
+      - CoreDomain
+      - CorePort
+      - Psr
+      - PsrHttp
+
+    CoreInfrastructure:
+      - CoreDomain
+      - CoreApplication
+      - CorePort
+      - Psr
+      - PsrHttp
+
+    # A gateway package may use core plus its own SDK, nothing else.
+    GatewayMidtrans:
+      - CoreDomain
+      - CoreApplication
+      - CorePort
+      - Psr
+      - PsrHttp
+      - SdkMidtrans
+
+    GatewayXendit:
+      - CoreDomain
+      - CoreApplication
+      - CorePort
+      - Psr
+      - PsrHttp
+      - SdkXendit
+      - SdkGuzzle
+
+    GatewayStripe:
+      - CoreDomain
+      - CoreApplication
+      - CorePort
+      - Psr
+      - PsrHttp
+      - SdkStripe
+
+    QrRenderer:
+      - CoreDomain
+      - CorePort
+      - Psr
+      - SdkQr
+
+    BridgeLaravel:
+      - CoreDomain
+      - CoreApplication
+      - CorePort
+      - CoreInfrastructure
+      - Psr
+      - PsrHttp
+      - FrameworkLaravel
+
+    BridgeSymfony:
+      - CoreDomain
+      - CoreApplication
+      - CorePort
+      - CoreInfrastructure
+      - Psr
+      - PsrHttp
+      - FrameworkSymfony
+      - FrameworkDoctrine
+
+    BridgeStandalone:
+      - CoreDomain
+      - CoreApplication
+      - CorePort
+      - CoreInfrastructure
+      - Psr
+      - PsrHttp
+
+    Testing:
+      - CoreDomain
+      - CoreApplication
+      - CorePort
+      - Psr
+      - PsrHttp
+
+    # Third-party and framework namespaces are leaves: nothing of ours may be
+    # reached from inside them, and they may reference nothing of ours.
+    Psr: ~
+    PsrHttp: ~
+    SdkMidtrans: ~
+    SdkXendit: ~
+    SdkStripe: ~
+    SdkQr: ~
+    SdkGuzzle: ~
+    FrameworkLaravel: ~
+    FrameworkSymfony: ~
+    FrameworkDoctrine: ~

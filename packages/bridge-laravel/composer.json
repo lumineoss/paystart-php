@@ -1,0 +1,35 @@
+{
+    "name": "lumineoss/paystart-bridge-laravel",
+    "description": "Laravel bridge: service provider, config, migrations, routes, Artisan commands.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "illuminate/console": "^11.0 || ^12.0",
+        "illuminate/database": "^11.0 || ^12.0",
+        "illuminate/routing": "^11.0 || ^12.0",
+        "illuminate/support": "^11.0 || ^12.0",
+        "lumineoss/paystart-core": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.12",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Bridge\\Laravel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Bridge\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lumineoss\\Paystart\\Bridge\\Laravel\\PaystartServiceProvider"
+            ]
+        }
+    }
+}

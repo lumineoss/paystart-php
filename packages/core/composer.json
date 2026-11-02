@@ -1,0 +1,44 @@
+{
+    "name": "lumineoss/paystart-core",
+    "description": "Framework-agnostic payment orchestration: shared kernel, payment, accounting, audit, and the ports they depend on.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "psr/clock": "^1.0",
+        "psr/container": "^2.0",
+        "psr/event-dispatcher": "^1.0",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^2.0",
+        "psr/log": "^3.0",
+        "psr/simple-cache": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "suggest": {
+        "lumineoss/paystart-gateway-midtrans": "Midtrans adapter",
+        "lumineoss/paystart-gateway-xendit": "Xendit adapter",
+        "lumineoss/paystart-gateway-stripe": "Stripe adapter",
+        "lumineoss/paystart-qr-renderer": "Render QR payloads to SVG or PNG",
+        "lumineoss/paystart-bridge-laravel": "Laravel bridge",
+        "lumineoss/paystart-bridge-symfony": "Symfony bridge",
+        "lumineoss/paystart-bridge-standalone": "PDO persistence and minimal bootstrap"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Core\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lumineoss\\Paystart\\Core\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    }
+}
